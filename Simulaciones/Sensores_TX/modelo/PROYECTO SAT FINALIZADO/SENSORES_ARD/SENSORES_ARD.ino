@@ -10,10 +10,10 @@ LiquidCrystal lcd(2, 3, A1, A2, A3, A4);
 Adafruit_BME280 bme(BME_CS);
 
 // -------- Pines --------
-#define LED_TEMP 6
+#define LED_TEMP 9
 #define LED_HUM  8
 #define LED_PRES 7
-#define LED_DIST 9
+#define LED_DIST 6
 
 #define TRIG_PIN 4
 #define ECHO_PIN 5
