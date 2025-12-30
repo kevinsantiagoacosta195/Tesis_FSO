@@ -14,7 +14,7 @@ void setup() {
   TCCR1B |= (1 << CS11);
 
   ICR1 = 399;     // TOP → 5 kHz
-  OCR1A = 100;    // ~50% duty
+  OCR1A = 300;    // ~50% duty
 }
 
 void loop() {
