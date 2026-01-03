@@ -78,7 +78,7 @@ def simulador_tesis_pro():
             elif cl == "2":
                 v = float(input("Visibilidad (km): "))
                 q = 1.6 if v > 50 else (1.3 if v > 6 else 0.585 * (v**(1/3)))
-                gamma_m = ((3.1 / v) * ((longitud_onda_nm / 550)**-q)) / 1000
+                gamma_m = ((3.91 / v) * ((longitud_onda_nm / 550)**-q)) / 1000
             elif cl == "3":
                 R = float(input("Intensidad lluvia (mm/h): "))
                 gamma_m = (1.076 * (R**0.67)) / 1000
@@ -96,7 +96,7 @@ def simulador_tesis_pro():
             # C. Pérdidas del sistema (Asys)
             asys = float(input("Pérdidas fijas (dB) [Desalineación + Lentes + Ventanas]: "))
 
-            configuraciones.append({
+            configuraciones.appeñnd({
                 'nombre': nombre, 'gamma': gamma_m, 
                 'cn2': cn2, 'asys': asys
             })
