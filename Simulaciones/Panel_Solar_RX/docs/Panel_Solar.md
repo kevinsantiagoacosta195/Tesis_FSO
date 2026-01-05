@@ -1,5 +1,5 @@
 # Simulacion Panel Solar
-
+## Fecha: 03/01/2026
 ## Objetivo
 modelar y analizar el comportamiento dinamico y electrico de un panel solar operando como fotodetector en un enlace de comunicaciones opticas por espacio libre (FSO), con el fin de determinar sus limitaciones en ancho de banda,  tiempo de respuesta, relacion señal a ruido y viabilidad para las señales moduladas
 
