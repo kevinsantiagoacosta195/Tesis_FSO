@@ -1,82 +1,130 @@
 import numpy as np
 
-def simulador_electronica_swipt():
-    print("\n--- SIMULADOR DE ELECTRÓNICA DE POTENCIA Y SEÑAL (SWIPT) ---")
-    print("Objetivo: Dimensionar Bias-T y Amplificador para señal de 3uA")
-    
-    # --- 1. DATOS DE ENTRADA (De tu simulación anterior) ---
-    try:
-        i_signal_ua = float(input("Ingrese la Corriente de Señal I_ph (uA) [ej. 3.0]: "))
-        f_pwm = float(input("Ingrese la Frecuencia PWM (Hz) [ej. 5000]: "))
-        v_panel_dc = 12.0 # Voltaje DC promedio del panel (Energía)
-    except ValueError:
-        print("Error: Ingrese números válidos.")
-        return
+def calculadora_ingenieria_swipt():
+    print("\n" + "="*80)
+    print(" 📐 CALCULADORA MATEMÁTICA DE DISEÑO SWIPT (Sin Constantes Mágicas) 📐")
+    print("="*80)
 
-    i_signal = i_signal_ua * 1e-6
+    # ==========================================
+    # 1. VARIABLES FUNDAMENTALES (INPUTS)
+    # ==========================================
+    # Solo estos dos datos son fijos, el resto se calcula.
+    I_signal = 2.7e-6   # 2.7 uA (Amperios)
+    F_pwm = 5000.0      # 5 kHz (Hertz)
     
-    print("\n" + "="*60)
-    print(f"ANÁLISIS DE IMPEDANCIAS PARA {f_pwm} Hz")
-    print("="*60)
+    # Constantes físicas
+    PI = np.pi
+    W_angular = 2 * PI * F_pwm  # Frecuencia angular (rad/s)
 
-    # --- 2. DISEÑO DEL BIAS-T (Separador) ---
-    # Criterio: La rama de datos debe tener BAJA impedancia a 5kHz
-    #           La rama de energía debe tener ALTA impedancia a 5kHz
-    
-    # Valores comerciales propuestos para iterar
-    l_bobina = 100e-3  # 100 mH (Milihenrios)
-    c_acoplo = 100e-9  # 100 nF (Nanofaradios)
-    
-    # Reactancias: X_L = 2*pi*f*L  |  X_C = 1 / (2*pi*f*C)
-    w = 2 * np.pi * f_pwm
-    z_bobina = w * l_bobina
-    z_capacitor = 1 / (w * c_acoplo)
-    
-    print(f"--- 1. Circuito Bias-T (Separación de Señal) ---")
-    print(f"Componentes: Bobina {l_bobina*1000:.0f}mH | Capacitor {c_acoplo*1e9:.0f}nF")
-    print(f"-> Impedancia Inductiva (Bloqueo AC): {z_bobina:.2f} Ohms")
-    print(f"-> Impedancia Capacitiva (Paso AC):   {z_capacitor:.2f} Ohms")
-    
-    # Validación de Diseño
-    if z_bobina > 1000 and z_capacitor < 500:
-        print("✅ ESTADO: EXCELENTE. La bobina bloquea bien y el capacitor deja pasar la señal.")
-    else:
-        print("⚠️ ESTADO: REVISAR. Se recomienda aumentar L o C.")
+    print(f"--- DATOS INICIALES ---")
+    print(f"Corriente de Enlace (Is): {I_signal*1e6:.1f} uA")
+    print(f"Frecuencia de Señal (F):  {F_pwm:.0f} Hz")
+    print(f"Velocidad Angular (w):    {W_angular:.0f} rad/s")
 
-    # --- 3. AMPLIFICADOR DE TRANSIMPEDANCIA (TIA) ---
-    print(f"\n--- 2. Amplificador TIA (Conversión Corriente -> Voltaje) ---")
+    # ==========================================
+    # 2. CÁLCULO DE BIAS-TEE (Impedancias)
+    # ==========================================
+    print(f"\n--- CÁLCULO 1: FILTRADO BIAS-TEE (Separación de Ondas) ---")
     
-    # Buscamos un voltaje de salida legible para el Arduino (ej. > 1.0V)
-    # V_out = I_in * R_feedback
+    # CRITERIO DE DISEÑO: 
+    # Para pasar la señal, la impedancia del capacitor (Xc) debe ser baja (< 500 Ohm).
+    # Para bloquear la señal, la impedancia del inductor (Xl) debe ser alta (> 3000 Ohm).
     
-    # Probamos con un valor comercial estándar: 470k Ohms
-    r_feedback = 470000 
-    v_out_teorico = i_signal * r_feedback
+    # 2.1 Cálculo del Inductor (L2) para bloquear AC
+    # Formula: L = Xl_deseada / w
+    Xl_objetivo = 3140.0 # Impedancia objetivo (Ohms) para bloquear bien
+    L_calculado = Xl_objetivo / W_angular
     
-    print(f"Resistencia de Feedback (Rf): {r_feedback/1000} kOhms")
-    print(f"Entrada: {i_signal_ua} uA  --->  Salida Estimada: {v_out_teorico:.4f} Volts")
-    
-    # --- 4. COMPARADOR (Digitalización) ---
-    print(f"\n--- 3. Etapa de Comparación (ADC / Digital) ---")
-    v_umbral = 0.5 # 0.5 Volts
-    
-    if v_out_teorico > v_umbral:
-        margen = v_out_teorico - v_umbral
-        print(f"Umbral del comparador: {v_umbral} V")
-        print(f"✅ DETECCIÓN EXITOSA: La señal ({v_out_teorico:.2f}V) supera el umbral.")
-        print(f"   Margen de seguridad: {margen*1000:.1f} mV")
-    else:
-        print(f"❌ FALLO: La señal amplificada ({v_out_teorico:.2f}V) es muy débil para el umbral.")
-        print("   -> SUGERENCIA: Aumentar Rf a 1 MOhm.")
+    # 2.2 Cálculo del Capacitor (C2) para dejar pasar AC
+    # Formula: C = 1 / (Xc_deseada * w)
+    Xc_objetivo = 318.0 # Impedancia objetivo (Ohms) baja para paso
+    C_calculado = 1 / (Xc_objetivo * W_angular)
 
-    print("\n" + "="*60)
-    print("VALORES FINALES PARA PROTEUS:")
-    print("="*60)
-    print(f"1. Inductor (Serie Batería):  {l_bobina*1000:.0f} mH")
-    print(f"2. Capacitor (Serie OpAmp):   {c_acoplo*1e9:.0f} nF")
-    print(f"3. Resistencia TIA (Rf):      {r_feedback/1000:.0f} kOhms")
-    print(f"4. Voltaje de Referencia (-): {v_umbral} V")
-    print("="*60)
+    print(f"Formula Reactancia Inductiva: XL = w * L")
+    print(f"Calculando L necesario para Z > {Xl_objetivo} Ohms...")
+    print(f" -> L_mínimo = {L_calculado*1000:.2f} mH (Usar estándar 100 mH)")
+    
+    # Recalculamos la impedancia real con el estándar de 100mH
+    L_real = 0.1 
+    Xl_real = W_angular * L_real
 
-# Ejecutar simulador
-simulador_electronica_swipt()
+    print(f"Formula Reactancia Capacitiva: XC = 1 / (w * C)")
+    print(f"Calculando C necesario para Z < {Xc_objetivo} Ohms...")
+    print(f" -> C_mínimo = {C_calculado*1e9:.2f} nF (Usar estándar 100 nF)")
+    
+    # Recalculamos impedancia real con estándar de 100nF
+    C_real = 100e-9
+    Xc_real = 1 / (W_angular * C_real)
+    
+    print(f"RELACIÓN DE FILTRADO REAL (Xl / Xc): {Xl_real/Xc_real:.1f} veces")
+    # Si es mayor a 10, es matemáticamente viable.
+
+    # ==========================================
+    # 3. CÁLCULO DE TRANSIMPEDANCIA (TIA)
+    # ==========================================
+    print(f"\n--- CÁLCULO 2: AMPLIFICADOR TIA (Ley de Ohm) ---")
+    
+    # 3.1 Definición del Punto de Operación (Bias V3)
+    # Seleccionamos un voltaje seguro para Single Supply
+    V_bias_dc = 1.50 
+
+    # 3.2 Cálculo de la Resistencia de Ganancia (R3)
+    # Queremos una oscilación de voltaje (Swing) visible. Digamos 1.25 Volts.
+    # Formula: R = V_swing / I_signal
+    V_swing_deseado = 1.27  # Voltios
+    R_calculada = V_swing_deseado / I_signal
+    
+    print(f"Formula TIA: V_out = I_in * Rf")
+    print(f"Objetivo: Convertir {I_signal*1e6} uA en onda de {V_swing_deseado} V")
+    print(f" -> Resistencia Calculada: {R_calculada/1000:.2f} kOhms")
+    print(f" -> Valor Comercial Cercano: 470 kOhms")
+    
+    R_real = 470000.0
+    V_swing_real = I_signal * R_real
+    V_pico_total = V_bias_dc + V_swing_real
+
+    # ==========================================
+    # 4. CÁLCULO DE VELOCIDAD (Slew Rate y Ancho de Banda)
+    # ==========================================
+    print(f"\n--- CÁLCULO 3: ESTABILIDAD Y RETRASO (C4) ---")
+    
+    # 4.1 Frecuencia de Corte del Filtro Pasabajos (C4 || R3)
+    # Criterio de Nyquist/Control: El filtro debe estar al menos 10x arriba de la señal
+    # para no deformarla (no crear retraso).
+    F_corte_minima = F_pwm * 10  # 50 kHz
+    
+    # Formula: C = 1 / (2 * pi * R * Fc)
+    C4_teorico = 1 / (2 * PI * R_real * F_corte_minima)
+    
+    print(f"Formula Frecuencia de Corte: fc = 1 / (2*pi*R*C)")
+    print(f"Para evitar retraso en {F_pwm} Hz, necesitamos corte > {F_corte_minima/1000:.0f} kHz")
+    print(f" -> Capacitor C4 Máximo: {C4_teorico*1e12:.2f} pF")
+    print(f" -> RECOMENDACIÓN MATEMÁTICA: Usar 1 pF o eliminar C4 para velocidad máxima.")
+    
+    # ==========================================
+    # 5. CÁLCULO DEL COMPARADOR (Umbrales)
+    # ==========================================
+    print(f"\n--- CÁLCULO 4: UMBRALES DE COMPARACIÓN (Zero-Crossing) ---")
+    
+    # Para eliminar el retraso (Lag), el umbral debe ser el Bias + Histeresis mínima
+    # Formula: V_thresh = V_bias + V_noise_margin
+    V_ruido_margen = 0.02 # 20 mV de seguridad
+    V_umbral_calculado = V_bias_dc + V_ruido_margen
+    
+    print(f"Formula: V2 = V_bias + Histeresis")
+    print(f" -> V_bias (Piso): {V_bias_dc} V")
+    print(f" -> V2 Calculado:  {V_umbral_calculado} V")
+
+    print("\n" + "="*80)
+    print(" 🏁 RESULTADOS FINALES CALCULADOS 🏁")
+    print("="*80)
+    print(f" 1. L2 (Inductor):  {L_real*1000:.0f} mH")
+    print(f" 2. C2 (Capacitor): {C_real*1e9:.0f} nF")
+    print(f" 3. V3 (Bias DC):   {V_bias_dc} V")
+    print(f" 4. R3 (Ganancia):  {R_real/1000:.0f} kOhms  (Genera {V_swing_real:.2f}V de señal)")
+    print(f" 5. C4 (Filtro):    1 pF       (Calculado para fc={F_corte_minima/1000:.0f}kHz)")
+    print(f" 6. V2 (Umbral):    {V_umbral_calculado} V   (Crítico para eliminar delay)")
+    print("="*80)
+
+if __name__ == "__main__":
+    calculadora_ingenieria_swipt()
