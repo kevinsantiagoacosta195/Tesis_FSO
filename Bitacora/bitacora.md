@@ -335,9 +335,237 @@ realizar una simulacion por medio de python y de proteus.
 
 2. analisis de los datos proporcionados por el programa
 
-3. 
 
 [Simulacion Bias_t](../Simulaciones/Bias_T_Filtros/docs/BiaS_T.md)
 
 ## Observaciones 
-se observa que el panel solar no permite transmision de alta velocidad, sin embargo apropiada para comunicacion de SATs.
+No se pudo realiza la simulacion por varias pruebas ya que se estaba aprendiendo la manera correcta en utilizar el LM328N como tanto amplificador, y comparador 
+
+---
+
+## Fecha: 08/01/2026
+**Fase:** Simulación  
+**Bloque:** Panel solar y circuito Bias-T, filtrado
+**Tiempo Dedicado:**
+
+## Objetivo:
+simular y analizar el comportamiento del panel solar como fotodetector, asi mismo simular el circuito Bias-T, en donde dividimos la informacion, y la respectiva informacion, con el fin de permitir que llegue de manera efectiva la informacion.
+
+## Fundamento
+con esta simulacion se puede interpretar de manera efectiva, la manera en la que es posible extraer la informacion de manera integra, asi como se puede aprovechar el sistema de energia para poder alimentar alarmas o entre otros dispositivos electronicos
+
+## Desicion
+realizar una simulacion por medio de python y proteus.
+
+## Actividades Realizadas
+1. realizar el codigo sobre la simulacion del panel solar y el circuito bias-t, por medio de python
+2. analisis de los datos proporcionados por el programa
+3. realizar el circuito bias tee, usando la idealizacion de un panel solar, igualmente, plantear el respectivo circuito Bias Tee, ademas realizar la etapa de amplificacion y digitalizacion
+4. hacer analisis de el comportamiento de la señal
+
+
+[Simulacion Bias_t](../Simulaciones/Bias_T_Filtros/docs/BiaS_T.md)
+
+## Observaciones 
+
+---
+
+## Fecha: 09/01/2026
+**Fase:** Prototipado real
+**Bloque** PWM_LASER
+
+## Objetivo:
+realizar el prototipo del funcionamiento del laser con el transistor MOSFET, igualmente la implementacion de PWM, para la respectiva modulacion de la informacion
+
+ ## Metodologia
+ 1. usamos el modulo Mosfet LR7843, soldamos los respectivos pines
+ ![MODULO LR7843 SUPERIOR](<Imagenes Prototipo/09_01_2026/MODULO MOSFET SUP.jpeg>)
+ ![MODULO LR7843 INFERIOR](<Imagenes Prototipo/09_01_2026/MODULO MOSFET INF.jpeg>)
+ 2. conectamos el arduino pin 9 al pwm del modulo y gnd con gnd
+ ![CONEXION ARUINO](<Imagenes Prototipo/09_01_2026/ARDUINO MOSFET.jpeg>)
+ 3. probamos que la fuente tenga 5V
+ ![COMPROBAR 5V](<Imagenes Prototipo/09_01_2026/PRUEBA FUENTE.jpeg>)
+ 4. conectamos el positivo del laser y el positivo de la fuente al + del modulo
+ ![CONEXION POSITIVOS TANTO FUENTE COMO LASER](<Imagenes Prototipo/09_01_2026/LASER +, + FUENTE MOSFET.jpeg>)
+ 5. conectamos el negativo del laser al load del arduino
+ ![GND LASER](<Imagenes Prototipo/09_01_2026/MOSFET - LASER.jpeg>)
+ 6. conectamos el negativo de la fuente al - del modulo
+ ![GND FUENTE](<Imagenes Prototipo/09_01_2026/MOSFET - FUENTE.jpeg>)
+ 7. montamos el codigo de la simulacion PWM
+ [Codigo Simulacion PWM](../Simulaciones/Pwm_Laser/modelo/ARD__PWM_LASER/ARD__PWM_LASER.ino)
+ 8. probamos simulacion de modulacion OOK
+ <video controls src="Videos Prototipo/09_01_2026/OOK LASER.mp4" title="Simulacion OOK"></video>
+ 8. probamos varios 5KHZ PWM
+ <video controls src="Videos Prototipo/09_01_2026/PWM 5KHZ.mp4" title="PWM 5kHz"></video>
+
+### Observaciones 
+se observa que el brillo del led no cambia ya que el ojo humano no detencta estas variaciones tan rapidas de 5khz, igualmente toco cambia de arduino uno ponque el pin 9 no entregaba el voltaje suficiento, teniendo como resultado que el laser no se prendiera, sin embargo a la hora de cambiar funciono de manera correcta. de la misma forma se debe implementar el mismo sistema con un laser de punto en cambio de el laser de cruz
+
+---
+
+## Fecha: 10/01/2026
+**Fase:** Prototipado Real
+**Bloque:** Panel solar, Bias TEE
+
+## Objetivo:
+realizar el circuito Bias T e implementarlo junto al panel solar para hacer el respectivo SWIPT, de igual maneja dejar listo ambos bloques para lograr en otra ocasion unificar la comunicacion.
+
+## Metodologia:
+ 1. soldamos tanto cable rojo (+), como negro (-) al panel solar
+ ![SOLDADA + PANEL](<Imagenes Prototipo/10_01_2026/SOL_PANEL_+.jpeg>)
+ ![SOLDADA - PANEL](<Imagenes Prototipo/10_01_2026/SOL_PANEL_-.jpeg>)
+
+ 2. soldamos del filamento de los cables mencionados anteriormente a un jumper para poder asi usarlo en la protoboard
+ ![UNION + PANEL JUMPER](<Imagenes Prototipo/10_01_2026/UNION_+_+.jpeg>)
+ ![UNION - PANEL JUMPER](<Imagenes Prototipo/10_01_2026/UNION_-_-.jpeg>)
+ ![RESULTADO UNION](<Imagenes Prototipo/10_01_2026/RESULTADO UNION.jpeg>)
+
+ 3. probamos que el panel solar funcione de manera correcta,nos dio un respectivo valor de 10.54V
+ ![PRUEBA PANEL SOLAR](<Imagenes Prototipo/10_01_2026/PRUEBA PANEL SOLAR.jpeg>)
+
+ 4. conectamos el panel solar a los pines del protoboard
+ ![CONEXION AL PANEL SOLAR](<Imagenes Prototipo/10_01_2026/CONEXION AL PANEL SOLAR.jpeg>)
+
+ 5. utilizamos un condensador de poliester de 1000nF, un pin se conecta al positivo del panel solar
+ ![CONDENSADOR 1000nF](<Imagenes Prototipo/10_01_2026/CONDENSADOR 1000N.jpeg>)
+
+ 6. de la salida del condensador se conecta al pin 2 del chip LM358P
+ ![CHIP PIN 2](<Imagenes Prototipo/10_01_2026/CHIP PIN 2.jpeg>)
+
+ 7. usamos una resistencia de gran valor en este caso 181K desde el respectivo pin 2 al pin output (Pin 1)
+ ![RESITENCIA](<Imagenes Prototipo/10_01_2026/RESISTENCIA POTENCIA.jpeg>)
+
+ 8. del pin 3 del chip vamos poner un potenciometro de 10K, de la misma manera lo energizamos
+ ![CABLEADO POTENCIOMETRO 1](<Imagenes Prototipo/10_01_2026/CABLEADO POTENCIOMETRO.jpeg>)
+ ![POTENCIOMETRO SUP](<Imagenes Prototipo/10_01_2026/POTENCIOMETRO SUP.jpeg>)
+ ![POTENCIOMETRO FRON](<Imagenes Prototipo/10_01_2026/POTENCIOMETRO FRON.jpeg>)
+ 
+ 9. del pin 1 del amplificador lo conectamos hasta el chip LM358P del comparador, especificamente al 3
+ ![CONEXION SEGUNDO CHIP](<Imagenes Prototipo/10_01_2026/PIN 1- CHIP2.jpeg>)
+ 
+ 10. ubicamos un segundo amplificador, al pin 2, se energiza respectivamente
+ ![CABLEADO SEGUNDO POTENCIOMETRO](<Imagenes Prototipo/10_01_2026/CABLEADO SEGUNDO POTENCIOMETRO.jpeg>)
+ ![SEGUNDO POTENCIOMETRO](<Imagenes Prototipo/10_01_2026/2 POTENCIOMETRO FRONTAL.jpeg>)
+ 
+ 11. energizamos ambos chips
+ ![ENERGIZAR CHIPS](<Imagenes Prototipo/10_01_2026/ENERGIZAMOS CHIP.jpeg>)
+ 
+ 12. damos una salida del segundo comparador
+ ![OUTPUT SEGUNDO CHIP](<Imagenes Prototipo/10_01_2026/OUTPUT SEGUNDO CHIP.jpeg>)
+
+ 13. por la parte del DC, ponemos el inductor
+ ![INDUCTOR](<Imagenes Prototipo/10_01_2026/INDUCTOR.jpeg>)
+
+ 14. ubicamos un condensador de 1000uF, para almacenar la energia, se aterriza
+ ![CONDENSADOR 1000uF](<Imagenes Prototipo/10_01_2026/CONDENSADOR 1000uF.jpeg>)
+ ![GND CONDENSADOR](<Imagenes Prototipo/10_01_2026/ATERRIZADA CONDENSADOR.jpeg>)
+
+ 15. conectamos el arduino nano, el cual va al pin 0, y al respectivo 5V y GND, lo conectamos a la banda de energia inferior del protoboard
+ ![PINES ARDUINO](<Imagenes Prototipo/10_01_2026/PINES ARDUINO.jpeg>)
+
+ 16. ubicamos un led con su respectiva resistencia (220), en la salida DC
+ ![LED_DC](<Imagenes Prototipo/10_01_2026/LED_DC.jpeg>)
+ ![FUNCIONAMIENTO](<Imagenes Prototipo/10_01_2026/FUNCIONAMIENTO_LED.jpeg>)
+ ### Resultado:
+ se observa que el respectivo led se prende de manera correcta
+
+ 17. proyectamos el laser al panel solar
+ ![LASER CRUZ](<Imagenes Prototipo/10_01_2026/LASER CRUZ.jpeg>)
+ ### Observacion:
+ se observa que el laser de cruz sale por fuera del respectivo panel, por lo cual no aprovecha todo el potencial del laser por lo consiguiente se opta por poner un laser de punto
+
+ 18. se conecta el Laser de punto
+ ![LASER PUNTO](<Imagenes Prototipo/10_01_2026/LASER PUNTO.jpeg>)
+
+ 19. se programa el arduino para encender el laser 1 seg y apagarlo 1 seg
+ [Codigo encender apagar](<Codigo Prototipo/10_01_2026/ENC_APA/ENC_APA.ino>)
+ <video controls src="Videos Prototipo/10_01_2026/1 SEG-1SEG.mp4" title="PUNTO, OOK 1seg"></video>
+
+ 20. se observa el serial plotter del arduino 
+ <video controls src="Videos Prototipo/10_01_2026/SERIAL PLOTTER.mp4" title="SERIAL PLOTTER"></video>
+ ### Observacion
+ se observa una señal con demasiado ruido aunque si funciona el Bias-t, no distingue la luz ambiente con el laser, tambien se observa que el panel solar es muy grande para realizar esta prueba ya que es de 11x9 cm aprox, esto hace que recolecte demasiado ruido, cuando se tapa el laser se observa que sigue recibiendo los mismos pulsos, ademas si cambia la señal cuando se ajusta con el potenciometro que lo que hacen uno es elevar el voltaje y el otro es el comparador que hace que funcione el trigger (disparador)
+
+ 21. se prueba el primer potenciometro para observar si si esta elevando el nivel de la señal, ya que este es el de referencia, como se observo en la simulacion
+ <video controls src="Videos Prototipo/10_01_2026/POTENCIOMETRO 1.mp4" title="POTENCIOMETRO 1"></video>
+ ### Resultado
+ funciona de manera correcta, aun asi no se logro detecta o diferenciar la señal
+
+---
+
+## Fecha: 11/01/2026
+**Fase:** Prototipado Real
+**Bloque:** Panel solar, Bias TEE
+
+## Objetivo:
+Buscar y mejorar la sensisibilidad del circuito para lodrar diferenciar la señal ambiente a la señal del laser
+
+## Metodologia:
+ 1. se observa que hubo una mala conexion desde el amplificador hasta el comparador ya que estaba conectado al pin 3, y la respectiva conexion es al pin 2 por lo cual, de pronto era una de los problemas que tenia el circuito
+ 2. de la misma forma, se quita el led del nodo DC y se agrega al output del comparador para comprender los altos y bajos que se presenta del comparador
+ [CIRCUITO ARREGLADO](<Imagenes Prototipo/11_01_2026/CIRCUITO ARREGLADO.jpeg>)
+ ![GRAFICA SEÑAL](<Imagenes Prototipo/11_01_2026/SEÑAL COMPORTAMIENTO.png>)
+
+### Observaciones
+se observa que la señal todavia tiene mucho ruido y no diferencia la señal que es emitida por el laser
+
+---
+
+## Fecha: 12/01/2026
+**Fase:** Desarrollo prototipo 
+**Bloque** Filtro RC Pasabajo, Panel solar
+
+## Objetivo
+mejorar el ruido que pueda presentar el sistema, que permita diferenciar el pulso del laser de la luz ambiente, del mismo modo hacer mas eficiente el sistema
+
+## Metodologia
+ 1. como alternativa a reducir la capacitancia paracita del panel solar, se realizo un protector con carton dejando un espacio de 4x4cm, esto con el fin de reducir tanto el ruido como la capacitancia paracita
+ ![MOLDE](<Imagenes Prototipo/12_01_2026/MOLDE.jpeg>)
+ ![RECORTE 4X4 CM](<Imagenes Prototipo/12_01_2026/RECORTE 4X4 CM.jpeg>)
+ ![4X4 CM](<Imagenes Prototipo/12_01_2026/4X4 cm.jpeg>)
+
+ 2. se conecta una resistencia de 1k junto al capacitor anterior de 1000nF, esto con el fin de realizar un Filtro RC Pasa-alto, permitiendo pasar asi frecuencias mayores a 159kHZ de la misma forma se cambio la resistencia de 181K, por 600K para mejorar la relacion de potencia
+ ![RC PASA ALTO](<Imagenes Prototipo/12_01_2026/FILTRO PASA ALTO.jpeg>)
+![CIRCUITO COMPLETO](<Imagenes Prototipo/12_01_2026/CIRCUITO COMPLETO.jpeg>)
+ 3. se implementa en el receptor un codigo de arduino que permita identificar, la frecuencia de 5khz gracia al inpulse, de la misma manera se visualiza por medio del LED
+<video controls src="Videos Prototipo/12_01_2026/COMPLETO.mp4" title="CIRCUITO COMPLETO RECEPCION DE SEÑALES"></video>
+
+[RECEPCION 5KHZ](<Codigo Prototipo/12_01_2026/Recibir_5khz/Recibir_5khz.ino>)
+
+![SEÑAL PULSO PWM](<Imagenes Prototipo/12_01_2026/ANALISIS DE SEÑALES.png>)
+
+### Observaciones
+ se observa que en el codigo detecta los pulsos altos del sistema, sin embargo no reconoce todos los pulsos solo es posible de graduando manualmente los potenciometros, aunque al rato se encienda y se mantenga el alto, el problema es que aunque se tape el panel solar sigue detectando el mismo ruido y se sigue comportando de la misma forma, aunque con el filtro el sistema se estabilizo de la mejor manera
+ 
+### Decision 
+ya que el circuito es muy inestable presenta mucha capacitancia, y los potenciometros toca ajustarlos segun las circunstancias del ambiente, por lo cual se desea implementar un modulo que permite que esta comparacion sea mas eficaz y estable, ya que es una un PCB, que es un circuito ya soldado y calibrado, no presenta problemas como el protoboard que cualquier cable suelto puede generar interferencia, ademas tiene led que nos dice si el laser lleva la misma sintonia que el modulo, igualmente bajar la frecuencia ya que es muy rapida para su fotodeteccion
+
+---
+
+## Fecha: 12/01/2026
+**Fase:** simulaciones
+**Bloque** Simulador comparador LM393
+
+## Objetivo
+probar el comparador LM393 comprobando si permite diferenciar entre el Ruido ambiente y la señal emitida por el Haz de luz, de la misma manera identificar cual sistema es mas eficaz en este sentido
+
+## Metodologia
+1. Realizar una simulacion por medio de proteus probando el funcionamiento del Modulo LM393, que permita comprender la eficiencia de este comparador a la eficiencia del LM358P 
+2. analizar la grafica de analisis del sistema PWM
+
+## Resultado
+[Para mayor informacion recurrir al siguiente Link](<../Simulaciones/Comparador LM393/Docs/LM393.md>)
+
+---
+
+## Fecha: 15/01/2026
+**Fase:** Desarrollo Prototipo
+**Bloque:** Implementacion LM393
+
+## Objetivo
+Comprobar como se comporta el modulo LM393, taanto en su eficiencia como en su respectiva estabilidad logrando, asi identificar los pequeños cambios que presenta la modulacion PWM, por lo mismo se incorpora su uso en el actual proyecto, permitiendo analizar posibles problemas o fortalezas del sistema.
+
+## Metodologia
+1. se desolda el respectivo LDR, en donde se implentara el panel solar que actuario como receptor de luz
+2. se incorpora en el protoboard un filtro pasa altos, que permita tanto convertir la señal en AC, como en dejar pasar solo una frecuencia
+3. 
