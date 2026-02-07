@@ -1,2 +1,2 @@
 # Tesis_FSO
-in this reposity about system FSO for transmition and received of SATs
+sistema de comunicacion FSO (Free Space Optics) para la transmision de Sistemas de alerta temprana, usando paneles solares como fotodetectores, encargador de recibir la señal de comunicacion PWM y la alimentacion del sistema.
