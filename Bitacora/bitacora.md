@@ -554,7 +554,7 @@ probar el comparador LM393 comprobando si permite diferenciar entre el Ruido amb
 2. analizar la grafica de analisis del sistema PWM
 
 ## Resultado
-[Para mayor informacion recurrir al siguiente Link](<../Simulaciones/Comparador LM393/Docs/LM393.md>)
+[Simulacion LM393](<../Simulaciones/Comparador LM393/Docs/LM393.md>)
 
 ---
 
@@ -566,6 +566,102 @@ probar el comparador LM393 comprobando si permite diferenciar entre el Ruido amb
 Comprobar como se comporta el modulo LM393, taanto en su eficiencia como en su respectiva estabilidad logrando, asi identificar los pequeños cambios que presenta la modulacion PWM, por lo mismo se incorpora su uso en el actual proyecto, permitiendo analizar posibles problemas o fortalezas del sistema.
 
 ## Metodologia
-1. se desolda el respectivo LDR, en donde se implentara el panel solar que actuario como receptor de luz
-2. se incorpora en el protoboard un filtro pasa altos, que permita tanto convertir la señal en AC, como en dejar pasar solo una frecuencia
-3. 
+1. se desolda el respectivo LDR, en donde se implentara el panel solar que actuaria como receptor de luz
+![Modulo Completo LDR](<Imagenes Prototipo/15_01_2026/Modulo LDR.jpeg>)
+![Desoldado](<Imagenes Prototipo/15_01_2026/Desoldado.jpeg>)
+
+2. el panel solar le reducimos la zona de recepcion aun mas, con el fin de reducir el ruido generado por la luz
+![Reducion Zona](<Imagenes Prototipo/15_01_2026/Reduccion Zona .jpeg>)
+![Reduccion Zona](<Imagenes Prototipo/15_01_2026/Prueba Panel Solar.jpeg>)
+
+3. se solda el panel solar al modulo LM393, por esto se implementan dos pines para la respectiva conexion con jumpers al protoboard para poder utilizar el filtro pasa altos
+![alt text](<Imagenes Prototipo/15_01_2026/Pin Entrada.jpeg>)
+
+4. se incorpora en el protoboard un filtro pasa altos, que permita tanto convertir la señal en AC, como en dejar pasar solo una frecuencia, en este caso usamos un condensador 1000nf y 10k de resistecia de 1k ohm, dandonos como resultado la deteccion de frecuencias mayores a 159Hz, evitando asi las frecuencias como las bombillas que en Latino America es de 60Hz
+![Filtro Pasa Alto](<Imagenes Prototipo/15_01_2026/Filtro Pasa Alto.jpeg>)
+
+5. Se procede a conectar el panel solar al protoboard, en el in del filtro
+![Conexion panel solar](<Imagenes Prototipo/15_01_2026/Conexion panel Solar.jpeg>)
+
+6. se conecta el out del filtro al modulo LM393, en donde se encuentra ya filtrada la luz
+![Conexion Filtro - Panel solar](<Imagenes Prototipo/15_01_2026/Conexion al modulo LM393.jpeg>)
+
+5. se procede a conectar el arduino al out del modulo LM393, permitiendo leer la salida del sistema, energizamos el modulo y del mismo modo utilizamos el pin digital (D2), para permitir observar los respectivos cambios del sistema
+![Conexion arduino](<Imagenes Prototipo/15_01_2026/Conexion Modulo al Arduino.jpeg>)
+
+
+![Cmprobamos el sistema completo](<Imagenes Prototipo/15_01_2026/Sistema completo.jpeg>)
+
+### Resultados
+el sistema se comporto de la misma forma que con el sistema anterior, detecta mucho ruido ambiente, por lo cual no permite diferenciar estos cambios en la transmision, aunque si se comporta mas estable, no se obtiene el resultado esperado, ya que se ajustaba el potenciometro del modulo, pero el cambio mas minimo hacia que no la luz led del modulo presentara valores no esperados, tambien es importante reiterar que si funcionara de esta forma se debe ajustar cada vez que se cambie de ambiente, ya que la recepcion de señal seria distinta, por otro lado las señales que se observaron en el serial Plotter, son iguales a las presentadas por el LM358p
+
+### Decision
+como alternativa, es cosiderable utilizar un filtro optico de color rogo, que permita filtrar las ondas de luz visible, permitiendo ingresar solo la longitud de onda de color rojo, esto con el fin de reducir drasticamente el ruido ambiente, permitir no reajustar cada vez que se cambia de escenario, del misma manera como conocemos que el panel no permitiria generar mucho voltaje se plantea realizar un array de paneles en donde unos permitan generar energia y otro recibir la informacion.
+
+## Fecha: 30/01/2026
+**Fase:** Desarrollo Prototipo
+**Bloque:** Implementacion Filtro Optico
+
+## Objetivo
+comprobar el funcionamiento del sistema de comunicacion fso, utilizando un filtro optimo para optimizar la recepcion de datos por parte de los SATs, del mismo modo comprobar la velocidad, estabilidad y escalabilidad del sistema, probando modulaciones, filtros y sistemas de recepcion, asi como sistema de sincronizacion de datos y su respectiva seguridad
+
+## Metodologia
+1. conseguir un filtro optico color rojo
+![Filtro Optico](<Imagenes Prototipo/30_01_2026/FILTRO ROJO.jpeg>)
+
+2. colocar el filtro rojo sobre la superfidie del panel solar, con el fin de que al incidir la luz solo pase la luz roja
+![Superponer FIltro al Panles](<Imagenes Prototipo/30_01_2026/FILTRO ROJO SOBRE PANEL.jpeg>)
+
+3. recubir el vidrio con cinta permitiendo que no ingrese luz lateral, que pueda actuar como ruido en el sistema
+![Recubrimiento Laterales](<Imagenes Prototipo/30_01_2026/SELLADO VIDRIO.jpeg>)
+
+4. comprobar cuanto voltaje esta produciendo el panel solar, en tres distintos momentos
+ con incidencia del laser + luz ambiente
+ ![Incidencia Panel](<Imagenes Prototipo/30_01_2026/INCIDE LASER.jpeg>)
+
+ sin incidencia del laser + luz ambiente
+ ![Sin Incidencia](<Imagenes Prototipo/30_01_2026/PANEL SIN INCIDIR.jpeg>)
+
+ panel 100% sin recepcion de luz
+ ![Sin Luz alguna](<Imagenes Prototipo/30_01_2026/PANEL TAPADO.jpeg>)
+
+5. a partir de esto se decide no hacer uso de ningun comparador, y probar el cambio generado por medio del ADC del arduino, funcionando asi como un Osciloscopio, observando los respectivos cambio entre un low y un high
+<video controls src="Videos Prototipo/30_01_2026/Osciloscopio.mp4" title="Cambios Osciloscopio"></video>
+<video controls src="Videos Prototipo/30_01_2026/SERIAL PLOTTER.mp4" title="Serial Plotter"></video>
+
+[Codigo Osciloscopio](<Codigo Prototipo/30_01_2026/osciloscopio.ino>)
+
+### Resultado
+se observa que cuando no se incide el laser se encuentra en un nivel inferior o un valor ADC menor, pero cuando se incide aumenta tanto el nivel como la velocidad, ademas lo observado en el multimetro es el mismo fenomeno, concluyendo que el sistema logra diferenciar con gran diferencia el laser a la luz ambiente, con ento podemos empezar a digitalizar los datos segun su esto, pasando informacion analoga a Digital
+
+6. se procede a probar modulacion On-Off keying, usando los siguientes codigos, el cual el sistema detecta y emite 1 segundo high y el segundo siguiente low
+para el sistema de recepcion hacemos uso de un TH o umbral quiere decir que cuando el nivel ADC pasa un nivel, es un 1 y cuando es menor que ese th es 0, este th se calcula (ADCmx + ADCmn)/2-
+
+niveles ADC
+![Niveles ADC mayor](<Imagenes Prototipo/30_01_2026/ADC_MAYOR.png>)
+![Niveles ADC menor](<Imagenes Prototipo/30_01_2026/ADC_MENOR.png>)
+
+Codigo OOK
+[Laser OOK](<Codigo Prototipo/30_01_2026/OOK/LASER_ON_OFF.ino>)
+[Laser On](<Codigo Prototipo/30_01_2026/OOK/RECEPCION_ON_OFF.ino>)
+
+### Resultado
+![Resultado](<Imagenes Prototipo/30_01_2026/PRUEBA ON-OFF.png>)
+como se observa que cuando el laser esta en high en el laser el sistema lo detecta de manera correcta imprimiendo ON, y cuando se encuentra apagado, detecta el OFF, tambien nos damos que tenemos buena diferencia entre la señal apagada y encendida
+
+7. a partir de esto, podemos hacer deteccion de bits de informacion, el principio es transmitir una serie de on off en serie, y que llegue de manera efectiva en el receptor, pero en forma de 1 y 0. formando asi un byte
+
+[Codigo Laser Bits](<Codigo Prototipo/30_01_2026/BITS/BITS_LASER.ino>)
+[Codigo Receptor Bits](<Codigo Prototipo/30_01_2026/BITS/BITS_RECEPTOR.ino>)
+
+<video controls src="Videos Prototipo/30_01_2026/BITS FSO.mp4" title="Bits"></video>
+
+### Resultado 
+se obtiene una optima recepcion de los bits
+![Bits](<Imagenes Prototipo/30_01_2026/Prueba Bits.png>)
+
+### Observaciones
+en este sistema presenta dos principales problemas, una de ellas es la sincronizacion entre el emisor y receptor ya que el byte, no sabe donde inicia el mensaje y donde lo finaliza, ademas de eso se esta realizando con una comunicacion lenta, por lo cual casi no hay errores, sin embargo para la transmision de telemetria se debe mejorar considerablemente la velocidad de transmision
+
+### Decision
+para la velocidad se debe ajustar la velocidad de corte, se debe mejorar del mismo modo la manera en que se piensan transmitir los mensajes, ya que se debe ajustar por protocolo, igualmente, utilizar timer, reducir la frecuencia o aumentarla segun el caso,utilizar un sistema para la sincronizacion correcta de los datos, para lograr asi transmitir Telemetria de manera eficiente
