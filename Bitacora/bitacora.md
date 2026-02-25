@@ -598,6 +598,8 @@ el sistema se comporto de la misma forma que con el sistema anterior, detecta mu
 ### Decision
 como alternativa, es cosiderable utilizar un filtro optico de color rogo, que permita filtrar las ondas de luz visible, permitiendo ingresar solo la longitud de onda de color rojo, esto con el fin de reducir drasticamente el ruido ambiente, permitir no reajustar cada vez que se cambia de escenario, del misma manera como conocemos que el panel no permitiria generar mucho voltaje se plantea realizar un array de paneles en donde unos permitan generar energia y otro recibir la informacion.
 
+----
+
 ## Fecha: 30/01/2026
 **Fase:** Desarrollo Prototipo
 **Bloque:** Implementacion Filtro Optico
@@ -665,3 +667,48 @@ en este sistema presenta dos principales problemas, una de ellas es la sincroniz
 
 ### Decision
 para la velocidad se debe ajustar la velocidad de corte, se debe mejorar del mismo modo la manera en que se piensan transmitir los mensajes, ya que se debe ajustar por protocolo, igualmente, utilizar timer, reducir la frecuencia o aumentarla segun el caso,utilizar un sistema para la sincronizacion correcta de los datos, para lograr asi transmitir Telemetria de manera eficiente
+
+---
+
+
+## Fecha: 13/02/2026
+**Fase:** Desarrollo Prototipo
+**Bloque:** Desarrollo logaritmo (Estados)
+
+## Objetivo
+permitir que el panel solar detecte niveles de estado de alerta, por medio de pulsos opticos, permitiendo general distintos umbrales a partir del estado del fenomeno analizado.
+
+## Metodologia
+1. dejamos el mismo sistema usado en el desarrollo realizado en el punto anterior, pero se procede a probar un metodo diferete tanto de comunicacion como de recepcion, teniendo en cuentas las limitaciones fisicas del panel como fotodetector.
+
+2. cargamos el codigo del emisor
+[Codigo Laser](<Codigo Prototipo/13_02_2026/ESTADO_SAT_LASER/ESTADO_SAT_LASER.ino>)
+
+### Resultados
+primero declaramos los pines ya previamente definidos, igualmente inicialiazamos la variable de el estado del sitema (currentstate), guardamos el instante en milisegundos desde que el arduino arranco, siendo util para poder medir intervalos de 1 seg, a partir de esto creamos un for para decir que cada vez que se ingrese por serial un 1 haya un pulso de 200ms (100 on y 100 of), si se ingresa un 2, (3 pulsos de 200) y el 3, 6 pulsos correspondientemente, ademas se implementa un while para mantener el laser apagado 1 segundo (pulso + silencio), denominado (busy-wait), para finalizar configuramos la salida digital en el pin 9, y imprimimos la opcion de estado, permitimos el leer caracter desde el serial y realizamos su relacion con el estado para afectuar el pulso correspondiente
+
+3. cargamos el codigo del receptor 
+[Codigo Panel](<Codigo Prototipo/13_02_2026/ESTADO_SAT_PANEL/ESTADO_SAT_PANEL.ino>)
+
+### Resultado
+establecemos el pin del panel solar (A0), usamos el margen de deteccion quiere decir que solo considera pulsos superiores a un min, para reducir ruido, variables para inicio del segundo, para el numero de pulsos detectados en cada ventana, y numero de ventanas consecutivas sin pulsos, asi como el estado anterior de la señal, instante en el que inicio el pulso permitiendo detectar flancos, a partir de esto el arduino en este caso lee 10 veces y promedia (Reduccion del ruido) esto se le llama filtro promedio movil (Filto pasa bajos digital), suaviza la señal pero reduce la respuesta dinamica del sistema.
+
+calibramos la base, se mide la liz ambiente durante 1.5 seg, se estima el nivel DC del canal optico, y se fija el nivel de referencia, para finalizar se convierte la señal analoga en digital (Binario), se valida la duracion de cada pulso (Debe durar 60ms) y cada seg se valida el estado del sistema, y se clasifica el estado, se reinicia la ventana y actualiza el estado
+
+4. se procede hacer las pruebas del PCM, permitiendo validar que el panel solar los detecta de manera optima
+
+ Estado en el que el sistema se encuentra estable
+ <video controls src="Videos Prototipo/12_02_2026/Estado Estable.mp4" title="Estable"></video>
+
+ Estado en el que el sistema se encuentra en alerta
+ <video controls src="Videos Prototipo/12_02_2026/Estado Alerta.mp4" title="Alerta"></video>
+
+ Estado en el que el sistema se encuentra en emergencia
+ <video controls src="Videos Prototipo/12_02_2026/Estado emergencia.mp4" title="Emergencia"></video>
+
+### Decision
+se plantea completar el sistema emisor, para eso se planea diseñar una estructura electronica, capaz de auto direccionarse, o concentrar el laser en distintos puntos por medio de servomotores, del mismo modo dejar listo para el montaje en la "maqueta", asi como la adecuacion del sistema de energia, para permitir tener mas practicidad en la evolucion de pruebas
+
+por otro lado, se desea probar paneles de menores tamaños para comprobar su comportamiento y su respectiva capacitancia, para ir probando de manera paralela el funcionamiento de sistemas en mayor velocidad y con uso de modulacion mas estables y mas robusta
+
+----
