@@ -1,3 +1,5 @@
+La redacción, así como la coherencia y cohesión del texto, no corresponden a la versión final del documento. El presente material tiene como objetivo servir como registro de trabajo para el seguimiento del desarrollo del proyecto durante sus fases de simulación, diseño y prototipado.
+
 ## FECHA: 21/12/2025
 **Fase:** Inicio del Proyecto (Desarrollo Prototipo)
 **Tiempo Dedicado:** 20 minutos
@@ -712,3 +714,158 @@ se plantea completar el sistema emisor, para eso se planea diseñar una estructu
 por otro lado, se desea probar paneles de menores tamaños para comprobar su comportamiento y su respectiva capacitancia, para ir probando de manera paralela el funcionamiento de sistemas en mayor velocidad y con uso de modulacion mas estables y mas robusta
 
 ----
+
+## Fecha: 15/02/2026
+**Fase:** Desarrollo Prototipo
+**Bloque:** Desarrollo servo PAN-TILT
+
+## Objetivo
+Desarrollar un sistema electronico de alineacion basado en Pan-Tilt (dos ejes, Horizontal y vertical), permitiendo mejorar tanto la eficiencia del enlace, como rectificacion por errores, ademas permitiria escalar el sistema a mas receptores, realizando asi un sistema aun mas robusto
+
+## Metodologia
+1. se hace uso de archivos STL ya creados con este fin (PAN-TILT), sin embargo la base del laser era muy corta, por lo cual fue necesario hacer uso de tinkercard 3D, para editar la figura permitiendo personalizar tanto el soporte del laser como la base, para posible estructura de cableado.
+
+Diseño 3D Tinkercard base inferior
+ ![Vista Frontal](<Imagenes Prototipo/15_02_2026/Soporte inferior - vista frontal.png>)
+
+ ![Vista Superior](<Imagenes Prototipo/15_02_2026/Soporte inferior - Vista superior.png>)
+
+Diseño 3D Tinkercard base medio
+ ![Vista Frontal](<Imagenes Prototipo/15_02_2026/Soporte Medio - Frontal.png>)
+
+ ![Vista Superior](<Imagenes Prototipo/15_02_2026/Soporte Medio - Superior.png>)
+
+Diseño 3D Tinkercard base laser - Superior
+ ![Vista Frontal](<Imagenes Prototipo/15_02_2026/Soporte Superior.png>)
+
+ ![Vista Frontal](<Imagenes Prototipo/15_02_2026/Soporte Superior.png>)
+
+ ### Referencia
+ https://www.youtube.com/watch?v=7hl3jEfcHm0 
+
+2. se imprime el diseño 3D, haciendo uso de las impresoras 3D de la Uniagustiniana.
+
+3. en el momento de tener las respectivas piezas se procede a armar la estructura completa del sistema de autodireccionamiento
+
+ 3.1 como primera medida se acomoda el primer servo a la estructura inicial (Soporte Inferior), haciendo uso de silicona para asegurar la estructura 
+
+ ![Ensamblaje soporte inferior](<Imagenes Prototipo/15_02_2026/Soporte Inferior.jpeg>)
+
+ 3.2 la siguiente parte del ensamblaje es la parte media, la cual tiene se procede a hacer uso de los brazos de servo, con el fin de unir la parte inferior con la media, para esto se procede a pegar con silicona el brazo en el lugar dispuesto para ello
+
+ ![Pegado Brazo Servo](<Imagenes Prototipo/15_02_2026/Soporte Medio-Pegado.jpeg>)
+
+ 3.3 del mismo modo se procede a poner el segundo servo motor que permitiria el movimiento del laser, permitiendo asi la creacion de un servo PAN-TILT, mientras el PAN mueve el eje horizontal, el TILT permite mover el vertical 
+
+ ![Servo Medio](<Imagenes Prototipo/15_02_2026/Servo motor- Medio.jpeg>)
+
+ ![Sevor PAN-TILT](<Imagenes Prototipo/15_02_2026/Union Servo inferior-medio.jpeg>)
+
+ 3.4 A su vez, se acomoda la tercera estructura el cual soportara el laser, completando asi la respectiva estructura
+
+![Estructura completa](<Imagenes Prototipo/15_02_2026/Estructura completa Laser.jpeg>)
+
+4. hacer el respectivo Software y validacion, que permita el ajuste de la estructura, por esta razon se hace uso del IDE de arduino y del programa Processing (permite la interaccion por medio de teclado o mouse)
+
+[Codigo Servo-Motores](<Codigo Prototipo/15_02_2026/Servomotores_Arduino/Servomotores.ino>)
+
+### Resultado
+se establece la posicion inicial de los servos, se genera la señal pwm a los servos, del mismo modo controlamos los servos por medio de WASD, los datos que llegan por serial, el mmicroontrolador toma una decision (WASD), los servos se manejan aumentando +2 el angulo, tambien la tecla r reinicia el sistema, se declara un rango de 180 grados max.
+
+[Codigo Preocessing](<Codigo Prototipo/15_02_2026/SERVO_laser/SERVO_laser.pde>)
+
+### Resultado 
+se hace uso de una biblioteca que permita a processing utilizar, puertos, y por medio de la comnicacion UART entre el computador y el arduino, haciendo una comunicacion interna, se crea la ventana grafica de 400 x 200 pixeles (processing siempre trabaja con un lopp grafico continuo), se selecciona el puerto, y la velocidad en baudios, se implementa un evento de teclado que se ejecuta cada vez que se presiona una tecla.
+
+<video controls src="Videos Prototipo/15_02_2026/Funcionamiento Estructura.mp4" title="Funcionamiento del sistema PAN-TILT"></video>
+
+como se observa en el contenido multimedia, esto nos permite cambiar la posicion del laser segun sean nuestras necesidades ya que vamos hacer uso de mas de un sistema receptor es util para enviar a mas de un sitio de emergencia.
+
+### Decision
+se procede a realizar el diseño electronico tanto del emisor como el receptor, por medio de un PCB, que permita tanto optimizar las conexiones en la creacion del prototipo, como plantear un modelado profesional, dando asi un desarrollo de hardware dedicado
+
+----
+
+## Fecha: 07/03/2026
+**Fase:** Desarrollo Prototipo
+**Bloque:** Desarrollo de hardware dedicado (PCBs)
+
+## Objetivo
+Desarrollar un diseño electronico tanto del sistema transmisor como el receptor por medio de una placa de circuito impreso, permitiendo miniaturizacion, reduccion de reducion electronico, principalmente en el sistema receptor, del mismo modo dar orden en el desarrollo del prototipo (Maqueta)
+
+## Metodologia
+1. se plantea el esquematico del sistema emisor, para eso se plantea todo lo necesario que deberia hacer parte del sistema, para eso se plantea los siguientes elementos.
+
+principalmente se hace uso de un microcontrolador (MCU), se escoge el esp-32, tanto por fiabilidad, costos y por caracteristicas como por es ADC de 12 bits de resolucion, dentro de los elementos tenemos, las entradas tanto de los servos, como del laser, que cuenta con su MOSFET LR7843 para la generacion de la señal PWM, por otro lado se implemento un sistema de control de agua, con el sensor YF-S201, que permite saber cuantos litros de agua pasan, sin embargo se controla por medio de un relay que deja o bloquea el flujo de agua, esto es util para controlar la caida de agua y para dar umbrales de riesgo ante desastres naturales.
+
+acerca de la manera de observar los cambios del sistema se implementa dos metodos uno es un led RGB, que cambia segun el Umbral que indique el sensor, asi mismo se incorpora una pantalla LCD 16x2, para la observacion del nivel del agua y del estado del SAT.
+
+para finalizar, se plantea el sistema de alimentacion por medio de panel solar, haciendo el proyecto autosostenible
+
+para finalizar se hace un acomple de resistencias, diodo, boton de inicio y finalizacion, condensadores, que permitiran tener un sistema estable, robusto y fiable, asi como el desarrollo necesario segun las necesidades del presente proyecto.
+
+2. se realiza el respectivo esquematico del sistema TX, como primer instancia se hace uso de elementos tanto superficiales (Resistencias, capacitores y diodo), mientras que los elementos externos, son añadidos por medio de borneras (servos, laser, pantalla, sonsor de flujo, bomba de agua), sin embargo el sistema de reduccion de voltaje, tanto de 3.3v como de 5v se encuentran dentro del PCB igual que el rel y el MCU, como se observa en la siguiente imagen
+
+![Esquematico TX_V1](<Imagenes Prototipo/Diseño V1 TX/Esquematico V1_TX.png>)
+
+3. despues de esto, se procede a convertir el esquematico a PCB, despues de esto acomodamos los componentes en la medida correspondiente al espacio del PCB la maqueta (140mm x 102mm), despues de esto configuramos las lineas de diseño, estaleciendo señales (PWM) de 0.254mm, low_power (3.3v) de  0.6mm y high power (5v) de 1mm, por lo cual se diseño de la siguiente manera
+
+![PCB Ruteo](<Imagenes Prototipo/Diseño V1 TX/Ruteo Circuito SUP_INF.png>)
+
+### Observaciones
+no se incorpora la uniones de GND, ya que se realizaba por medio de Copper Area, para reducir ruido, interferencias, etc. igualmente se eliina la capa de cobre sobre la antena ESP32 ya que puede general apantallamiento electromagnetico
+
+4. se incorpora el Area copper en la capa superior y inferior para unir los GND del sistema electronico
+
+![Copper Area inferior](<Imagenes Prototipo/Diseño V1 TX/Area Copper Inf.png>)
+
+![Copper Area Superior](<Imagenes Prototipo/Diseño V1 TX/Area copper_sup.png>)
+
+5. se observa el PCB en su vista 3D, asi como el silkscreen (nombrado, etiquetado de referencia)
+
+![Vista 3D](<Imagenes Prototipo/Diseño V1 TX/3D TX_V1.png>)
+
+### Observaciones
+se observa que algunas borneras estan ubicadas a la inversa, sin embargo gracias al silkscreen a la hora de soldar se puede areglar este problema de ubicacion
+
+----
+
+## Fecha: 09/03/2026
+**Fase:** Desarrollo Prototipo
+**Bloque:** Desarrollo de hardware dedicado (PCBs)
+
+## Objetivo
+Desarrollar un diseño electronico tanto del sistema transmisor como el receptor por medio de una placa de circuito impreso, permitiendo miniaturizacion, reduccion de reducion electronico, principalmente en el sistema receptor, del mismo modo dar orden en el desarrollo del prototipo (Maqueta)
+
+## Metodologia
+1. se plantea el esquematico del sistema receptor, para eso se plantea todo lo necesario que deberia hacer parte del sistema, para eso se plantea los siguientes elementos.
+
+de la misma forma que el emisor, se hace uso de un esp32, por las ventajas presentadas anteriormente, pero en este caso es mas primordial ya que se usan celulas solares de poco voltaje, por lo cual el detalle es mas fundamental, a comparacion del panel de pruebas.
+
+se añade borneras para el ingreso de 3 celulas solares, que permitiran detectar el estado del sitema de alerta, a su vez se implementan a cada celula un red de referencia, el cual medira la potencia o pulso recibido por cada celula, asi observar como esta funcionando el PCM, se cuenta con un boton start y finish.
+
+por la parte de HMI (human machine interface), que hace referencia a la visualizacion, se hace uso de una pantalla LCD 16x2 (Estado), un buffer que seria la alerta, y un led RGB que permitiria tambien identificar un estado general.
+
+en la fase de alimentacion se hace uso de un panel solar de 12v y se ubican dos reductores de energia, dando valores tanto de 3.3v para el esp32, como 5v  para los sensores, pantallas, etc.
+
+se acopla un sistema de estabilizacion, robustez por medio de resistencias, condensadores y proteccion al MCU, asi como la estabilidad del sistema de celdas. 
+
+2. se realiza el correspondiente esquematico del sistema receptor
+
+![esquematico RX_V1](<Imagenes Prototipo/Diseño V1 RX/Esquematico RX_V1.png>)
+
+3. se hace uso del espacio, planteado en el prototipo para la parte electronica, en este caso (106mm x 86mm), se ubican los componentes y se procede hacer el ruteo de la PCB
+
+![Enrutamiento RX_V1](<Imagenes Prototipo/Diseño V1 RX/Enrutamiento RX_V1.png>)
+
+4. se aplica la Copper Area tanto en la capa superior como en la inferior
+
+![Copper Area Inferior](<Imagenes Prototipo/Diseño V1 RX/Copeer Area RX_V1.png>)
+
+![Copper Area Superior](<Imagenes Prototipo/Diseño V1 RX/Copper Area Sup RX_V1.png>)
+
+5. se observa el sistema electronico en vista 3D
+![Vista 3D RX_V1](<Imagenes Prototipo/Diseño V1 RX/3D RX_V1.png>)
+
+### Decision
+despues de realizar la placa de circuito impreso, y mostrarselo a un docente, aconsejo tanto arreglar las lineas de diseño, como la manera de diseñar el circuito principal en la capa secundaria, esto ya que en el lugar en donde se realiza esta PCB, no tienen la tecnologia adecuada para hacer las lineas tan delgadas, del mismo modo no permite generar las vias (orificio que conecta electricamente las capas), por lo cual el diseño debe ser acoplado al fabricante, igual se prefirio quitar los componentes de superficie y se adecuo a Through-Hole o orificio pasante, para evitar posibles probles o cortos entre pines o lineas 
