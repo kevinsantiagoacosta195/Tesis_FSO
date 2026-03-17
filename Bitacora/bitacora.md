@@ -869,3 +869,36 @@ se acopla un sistema de estabilizacion, robustez por medio de resistencias, cond
 
 ### Decision
 despues de realizar la placa de circuito impreso, y mostrarselo a un docente, aconsejo tanto arreglar las lineas de diseño, como la manera de diseñar el circuito principal en la capa secundaria, esto ya que en el lugar en donde se realiza esta PCB, no tienen la tecnologia adecuada para hacer las lineas tan delgadas, del mismo modo no permite generar las vias (orificio que conecta electricamente las capas), por lo cual el diseño debe ser acoplado al fabricante, igual se prefirio quitar los componentes de superficie y se adecuo a Through-Hole o orificio pasante, para evitar posibles probles o cortos entre pines o lineas 
+
+
+----
+
+## Fecha: 16/03/2026
+**Fase:** Desarrollo Prototipo
+**Bloque:** Desarrollo de hardware dedicado (PCBs)
+
+## Objetivo
+Desarrollar un diseño electronico tanto del sistema transmisor como el receptor por medio de una placa de circuito impreso, permitiendo miniaturizacion, reduccion de reducion electronico, principalmente en el sistema transmisor, del mismo modo dar orden en el desarrollo del prototipo (Maqueta), acoplando el desarrollo propuesto por el docente
+
+## Metodologia
+
+1. se realiza el correspondiente esquematico del sistema receptor
+
+![Esquematico TX Version 2](<Imagenes Prototipo/Diseño V2 TX/Esquematico TX_V2.png>)
+
+3. se hace uso del espacio, planteado en el prototipo para la parte electronica, en este caso (106mm x 86mm), se ubican los componentes y se procede hacer el ruteo de la PCB (Se auto-enruta y luego manualmente se une GND)
+
+![Enrutamiento TX_V2](<Imagenes Prototipo/Diseño V2 TX/Enrutamiento TX_V2.png>)
+
+4. se aplica la Copper Area tanto en la capa superior como en la inferior y se configura con un espaciado de 1.5mm
+
+![Copper Area Inferior](<Imagenes Prototipo/Diseño V2 TX/Copper Area Inferior TX_V2.png>)
+
+![Copper Area Superior](<Imagenes Prototipo/Diseño V2 TX/Copper Area Superior TX_V2.png>)
+
+5. se observa el sistema electronico en vista 3D
+![Visualizacion 3D TX Version 2](<Imagenes Prototipo/Diseño V2 TX/Visualizacion 3D TX_V2.png>)
+
+### Decision
+se imprimirá la PCB para probar el respectivo tañano de los componentes electronicos, validando su respectiva posicion, a su vez observar la respectiva distribucion del PCB
+
