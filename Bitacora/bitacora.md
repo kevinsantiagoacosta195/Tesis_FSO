@@ -886,19 +886,41 @@ Desarrollar un diseño electronico tanto del sistema transmisor como el receptor
 
 ![Esquematico TX Version 2](<Imagenes Prototipo/Diseño V2 TX/Esquematico TX_V2.png>)
 
-3. se hace uso del espacio, planteado en el prototipo para la parte electronica, en este caso (106mm x 86mm), se ubican los componentes y se procede hacer el ruteo de la PCB (Se auto-enruta y luego manualmente se une GND)
+2. se hace uso del espacio, planteado en el prototipo para la parte electronica, en este caso (140mm x 102mm), se ubican los componentes y se procede hacer el ruteo de la PCB (Se auto-enruta y luego manualmente se une GND)
 
 ![Enrutamiento TX_V2](<Imagenes Prototipo/Diseño V2 TX/Enrutamiento TX_V2.png>)
 
-4. se aplica la Copper Area tanto en la capa superior como en la inferior y se configura con un espaciado de 1.5mm
+3. se aplica la Copper Area tanto en la capa superior como en la inferior y se configura con un espaciado de 1.5mm
 
 ![Copper Area Inferior](<Imagenes Prototipo/Diseño V2 TX/Copper Area Inferior TX_V2.png>)
 
 ![Copper Area Superior](<Imagenes Prototipo/Diseño V2 TX/Copper Area Superior TX_V2.png>)
 
-5. se observa el sistema electronico en vista 3D
+4. se observa el sistema electronico en vista 3D
 ![Visualizacion 3D TX Version 2](<Imagenes Prototipo/Diseño V2 TX/Visualizacion 3D TX_V2.png>)
 
-### Decision
-se imprimirá la PCB para probar el respectivo tañano de los componentes electronicos, validando su respectiva posicion, a su vez observar la respectiva distribucion del PCB
+5. se desarrolla el esquematico del sistema RX, en donde se realiza un cambio en componentes superficiales a componentes Through-hole 
 
+![Esquematico RX_V2](<Imagenes Prototipo/Diseño V2 RX/Esquematico RX_V2.png>)
+
+6. se hace uso del espacio, planteado en el prototipo para la parte electronica, en este caso (140mm x 102mm), se ubican los componentes y se procede hacer el ruteo de la PCB (Se auto-enruta y luego manualmente se une GND)
+
+![Enrutamiento RX_V2](<Imagenes Prototipo/Diseño V2 RX/Enrutamiento RX_V2.png>)
+
+7. se aplica la Copper Area tanto en la capa superior como en la inferior y se configura con un espaciado de 1.5mm
+
+![Copper Area Inferior](<Imagenes Prototipo/Diseño V2 RX/Copper Area Inferior RX_V2.png>)
+
+![Copper Area Superior](<Imagenes Prototipo/Diseño V2 RX/Copper Area superior RX_V2.png>)
+
+8. se observa el sistema electronico en vista 3D
+
+![Visualizacion 3D](<Imagenes Prototipo/Diseño V2 RX/Visualizacion RX_V2.png>)
+
+### Observaciones
+se observa que ademas de implementar los cambios mencionados anteriormente, se reduce la capa de cobre (Espaciado), por esta razon tambien se busca hacer reduccion de costos de implementacion
+
+tambien cabe aclarar que ambos PCBs no se observa error de diseño por medio de DRC (Desing Rule Check), sin embargo se realizaran pruebas de sistemas conjuntos antes de mandar a hacer la PCB, por ejemplo, combinar servos, led, sistema de agua, ademas de recepcion de celdas solares, por si es necesario la implementacion de amplificadores en el sistema.
+
+### Decision
+se imprimirá la PCB para probar el respectivo tañano de los componentes electronicos, validando su respectiva posicion, a su vez observar la respectiva distribucion del PCB y realizacion de pruebas mencionadas en las observaciones anteriores.
